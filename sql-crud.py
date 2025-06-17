@@ -95,11 +95,57 @@ eli_zeb_wond = Programmer(
 # session.add(margaret_hamilton)
 # session.add(bill_gates)
 # session.add(tim_berners_lee)
-session.add(eli_zeb_wond)
+# session.add(eli_zeb_wond)
 
 # commit our session to the database
-session.commit()
+# session.commit()
 
+# update a record in the Programmer table
+# programmer_to_update = session.query(Programmer).filter_by(id=7).first()
+# programmer_to_update.famous_for = "I am still for Nothing!"
+
+# updating multiple records in the Programmer table
+# programmers_to_update_multiple = session.query(Programmer)
+# for programmer in programmers_to_update_multiple:
+#     if programmer.gender == "M":
+#         programmer.gender = "Male"
+#     elif programmer.gender == "F":
+#         programmer.gender = "Female"
+#     else:
+#         print("Gender not defined")
+#         programmer.gender = "Prefer not to say"
+#     session.add(programmer)
+
+
+# to delete all records from the Programmer table
+# programmers_to_delete_all = session.query(Programmer).all()
+# for programmer in programmers_to_delete_all:
+#     print(f"Deleting programmer: {programmer.first_name} {programmer.last_name}")
+#     session.delete(programmer)
+#     session.commit()
+
+
+# deleting a single record from the Programmer table
+fname = input("Enter the first name of the programmer to delete: ")
+lname = input("Enter the last name of the programmer to delete: ")
+
+programmer_to_delete = session.query(Programmer).filter_by(first_name=fname, last_name=lname).first()
+
+# defensive programming to check if the programmer exists
+if programmer_to_delete is not None:
+    print(f"Deleted programmer: {programmer_to_delete.first_name} {programmer_to_delete.last_name}")
+    confirmation = input("Are you sure you want to delete this programmer? (yes/no): ")
+    if confirmation.lower() == "yes":
+        session.delete(programmer_to_delete)
+        session.commit()
+        print("Programmer deleted successfully.")
+    elif confirmation.lower() == "no":
+        print("Deletion cancelled.")
+    else:
+        print("Invalid input. Deletion cancelled.")
+
+else:
+    print("Programmer not found")
 
 # query the database to find all Programmers
 programmers = session.query(Programmer)
